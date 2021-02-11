@@ -1,15 +1,103 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
-<HEAD>
-  <TITLE>Happy Valentine's Day</TITLE>
-</HEAD>
-<BODY>
-<CENTER>
-<H1>Happy Valentine's Day</H1>
-			<UL>
-				<LI>List 1</LI>
-				<LI>List 2</LI>
-				<LI>List 3</LI>
-			</UL>
-</CENTER>
-</BODY></HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		  <TITLE>Happy Valentine's Day</TITLE>
+		  <style>
+				body{
+				  background-color:#000;
+				  margin:0;
+				  padding:0;
+				  overflow:hidden;
+			  }
+			  .snow{
+				  position: absolute;
+				  top:0;
+				  Left:0;
+			  }
+		  </style>
+	</HEAD>
+	<BODY>
+		<!-- <CENTER>
+			<H1 style="color: tomato;">Happy Valentine's Day</H1>
+		</CENTER> -->
+		<canvas id="canvas" class="snow"></canvas>
+		<script type="text/javascript">
+			(function(){
+				'use strict';
+				var canvas,ctx;
+				var points=[];
+				var maxDist=100;
+
+				function init(){
+					canvas = document.getElementById("canvas");
+					ctx = canvas.getContext("2d");
+					resizeCanvas();
+					generatePoints(700);
+					pointFun();
+					setInterval(pointFnn,25);
+					window.addEventListener('resize',resizeCanvas,false);
+				}
+
+				function point(){
+					this.x=Math.random()*(canvas.width+maxDist)-(maxDist/2);
+					this.y=Math.random()*(canvas.height+maxDist)-(maxDist/2);
+					this.z=(Math.random()*0.5)+0.5;
+					this.vx=((Math.random()*2)-0.5)*this.z;
+					this.vy=((Math.random()*1.5)+1.5)*this.z;
+					this.fill="rgba(255,255,255,"+((Math.random()*0.5)+0.5)+")";
+					points.push(this);
+				}
+
+				function generatePoints(amount){
+					var temp;
+					for(var i=0;i<amount;i++){
+						temp = new points();
+					}
+					console.log(points);
+				}
+
+				function draw(obj){
+					ctx.beginPath();
+					ctx.strokeStyle = "transparent";
+					ctx.fillStyle = obj.fill;
+					ctx.arc(obj.x,obj.y.dia,0,2*Math.PI);
+					ctx.closePath();
+					ctx.stroke();
+					ctx.fill();
+				}
+
+				function update(obj){
+					obj.x += obj.vx;
+					obj.y += obj.vy;
+					if(obj.x > canvas.width+(maxDist/2)){
+						obj.x = -(maxDist/2);
+					}else if(obj.xpos< -(maxDist/2)){
+						obj.x = canvas.width+(maxDist/2);
+					}else if(obj.y > canvas.height+(maxDist/2)){
+						obj.y = -(maxDist/2);
+					}else if(obj.y < -(maxDist/2)){
+						obj.y = canvas.height+(maxDist/2);
+					}
+				}
+
+				function pointFun(){
+					ctx.clearRect(0,0,canvas.width, canvas.height);
+					for(var i = 0;i<points.length;i++){
+						draw(points[i]);
+						update(points[i]);
+					}
+				}
+
+				function resizeCanvas(){
+					canvas.width = window.innerWidth;
+					canvas.height = window.innerHeight;
+					pointFun();
+				}
+
+				document.addEventListener('DOMContentLoaded',init,false);
+
+			})();
+		</script>
+	</BODY>
+</HTML>
